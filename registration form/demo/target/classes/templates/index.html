@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://wwwthymeLeaf.org">
+<head>
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav class="navbar">
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+</nav>
+<div th:if="${session.message}"
+th:classappend="{$session.message}" class="alert alert-success"
+     role="alert">
+    <p th:text="${session.message}"></p>
+    <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+</div>
+    <form th:action="@{/register}" th:object="${user}" method="post">
+    <h2>Registration Form</h2>
+    <label for="fullname">Full Name:</label>
+    <input type="text" id="fullname" name="fullname"><br><br>
+
+    <label for="gender">Gender:</label>
+    <input type="radio" id="male" name="gender" value="male">
+    <label for="male">Male</label>
+    <input type="radio" id="female" name="gender" value="female">
+    <label for="female">Female</label>
+    <input type="radio" id="other" name="gender" value="other">
+    <label for="other">Other</label><br><br>
+
+    <label for="dob">Date of Birth:</label>
+    <input type="date" id="dob" name="dob"><br><br>
+
+    <label for="address">Address:</label>
+    <textarea id="address" name="address"></textarea><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email"><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password"><br><br>
+
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
