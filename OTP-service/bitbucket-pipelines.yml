@@ -1,0 +1,38 @@
+image: maven:3.8.6-ibm-semeru-17-focal
+pipelines:
+  branches:
+    dev:  # Trigger this for any pushes to the dev branch.:
+      - step:
+          trigger: automatic
+          caches:
+            - maven
+          script:
+            - git clone git@bitbucket.org:zap-payments/zap-common.git
+            - cd zap-common
+            - mvn clean install
+            - cd ..
+      - step:
+          caches:
+            - maven # Cache any dependencies we download, speeds up build times.
+          script:
+            - mvn -e clean install -Dmaven.test.skip
+          artifacts:
+            - target/**
+      - step:
+          script:
+            - docker build ./ -t $AWS_ECR_REPOSITORY
+            - docker tag $AWS_ECR_REPOSITORY $AWS_ECR_REPOSITORY:$DEV_ENV_IMAGE_TAG
+            - pipe: "atlassian/aws-ecr-push-image:1.6.2"
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                IMAGE_NAME: $AWS_ECR_REPOSITORY
+                TAGS: $DEV_ENV_IMAGE_TAG
+            - pipe: "atlassian/ssh-run:0.2.4"
+              variables:
+                SSH_USER: ubuntu
+                SERVER: $DEV_ENV_SERVER_IP
+                SSH_KEY: $SSH_KEY
+                MODE: script
+                COMMAND: deployment.sh
