@@ -1,4 +1,3 @@
-
 Spring Boot Learning Project
 This repository contains small Spring Boot projects designed for learning and practicing Spring Boot features. Each project covers different aspects of Spring Boot, from basic setup to more advanced features like REST APIs, Spring Data JPA, and Security.
 
