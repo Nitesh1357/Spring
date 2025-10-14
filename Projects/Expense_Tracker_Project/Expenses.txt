@@ -1,0 +1,3 @@
+Tomato  : 80
+Room  : 7000
+umbrella  : 50
