@@ -17,4 +17,5 @@ public class UserController {
     public List<UserLocationDTO> getAllUsersLocation(){
         return userService.getAllUsersLocation();
     }
+
 }
